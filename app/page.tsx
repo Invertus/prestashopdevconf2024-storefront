@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <>
-      <ProductListing />
+      <ProductListing productsResponse={products} />
     </>
   );
 }

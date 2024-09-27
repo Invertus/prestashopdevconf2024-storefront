@@ -4,48 +4,21 @@ import { useState, useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import ProductCard from './product-card'
 import ProductListItem from './product-list-item'
-
-interface Product {
-  id: number
-  title: string
-  price: number
-  description: string
-  image: string
-}
-
+import { ApiResponse, Product } from '@/services/api/apiGetProducts'
 interface ProductListingProps {
-  searchQuery?: string
+  productsResponse: ApiResponse<Product>;
 }
 
-export default function ProductListingComponent({ }: ProductListingProps) {
-  const [products, setProducts] = useState<Product[]>([])
-  const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(false)
+export default function ProductListingComponent({ productsResponse: { items }  }: ProductListingProps) {
   const [ref, inView] = useInView()
   const [ view, setView ] = useState('card')
 
-  const fetchProducts = async () => {
-    if (loading) return
-    setLoading(true)
-    try {
-      // In a real application, you would fetch from your API here
-      // This is a mock API call
-      const response = await fetch(`https://fakestoreapi.com/products?limit=10&page=${page}`)
-      const newProducts = await response.json()
-      setProducts((prevProducts) => [...prevProducts, ...newProducts])
-      setPage((prevPage) => prevPage + 1)
-    } catch (error) {
-      console.error('Error fetching products:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
-  useEffect(() => {
-    if (inView) {
-      fetchProducts()
-    }
-  }, [inView])
+  // useEffect(() => {
+  //   if (inView) {
+  //     fetchProducts()
+  //   }
+  // }, [inView])
 
   return (
     <div>
@@ -58,15 +31,15 @@ export default function ProductListingComponent({ }: ProductListingProps) {
           </button>
       </div>
       <div className={view === 'list' ? 'space-y-4' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'}>
-        {products.map((product) =>
+        {items.map((product) =>
           view === 'list' ? (
-            <ProductListItem key={product.id} product={product} />
+            <ProductListItem key={product.productId} product={product} />
           ) : (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.productId} product={product} />
           )
         )}
       </div>
-      {loading && <p className="text-center mt-4">Loading more products...</p>}
+      {<p className="text-center mt-4">Loading more products...</p>}
       <div ref={ref} className="h-10" />
     </div>
   )

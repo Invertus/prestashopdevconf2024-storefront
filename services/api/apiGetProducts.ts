@@ -1,6 +1,6 @@
 import apiFetch from "@/services/api/apiFetch";
 
-interface Response<Entity> {
+export interface ApiResponse<Entity> {
     totalItems: number;
     order_by: string;
     sortOrder: "asc" | "desc";
@@ -8,7 +8,7 @@ interface Response<Entity> {
     items: Entity[];
 }
 
-interface Product {
+export interface Product {
     productId: number;
     active: boolean;
     name: string;
@@ -17,7 +17,7 @@ interface Product {
     category: string;
 }
 
-async function getProducts(): Promise<Response<Product>> {
+async function getProducts(): Promise<ApiResponse<Product>> {
     const response = await apiFetch(`${process.env.API_URL}products`)
     return response.json()
 }

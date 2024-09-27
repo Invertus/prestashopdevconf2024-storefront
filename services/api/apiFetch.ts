@@ -1,6 +1,38 @@
-// In-memory token store
+// In-memory token store for server only.
 let accessToken: string | null = null;
 let tokenExpiryTime: number | null = null; // Store the expiry time
+
+const setAccessToken = (token: string) => {
+  if (typeof window !== 'undefined') {
+    window.localStorage.setItem('accessToken', token);
+  } else {
+    accessToken = token;
+  }
+}
+
+const setTokenExpiryTime = (expiryTime: number) => {
+  if (typeof window !== 'undefined') {
+    window.localStorage.setItem('tokenExpirityTime', expiryTime.toString());
+  } else {
+    tokenExpiryTime = expiryTime;
+  }
+}
+
+const getAccessToken = (): string | null => {
+  if (typeof window !== 'undefined') {
+    return window.localStorage.getItem('accessToken');
+  } else {
+    return accessToken;
+  }
+}
+
+const getTokenExpiryTime = (): number | null => {
+  if (typeof window !== 'undefined') {
+    return Number(window.localStorage.getItem('tokenExpirityTime'));
+  } else {
+    return tokenExpiryTime;
+  }
+}
 
 // Function to fetch a new access token
 async function fetchAccessToken() {
@@ -22,13 +54,14 @@ async function fetchAccessToken() {
   }
 
   const data = await res.json();
-  accessToken = data.access_token;
-  tokenExpiryTime = Date.now() + data.expires_in * 1000;
+  setAccessToken(data.access_token);
+  setTokenExpiryTime(Date.now() + data.expires_in * 1000);
 }
 
 // Function to get the access token, refreshing it if necessary
-async function getAccessToken() {
-    if (!accessToken || tokenExpiryTime === null || Date.now() >= tokenExpiryTime) {
+async function refreshAccessToken() {
+    const tokenExpiryTime = getTokenExpiryTime();
+    if (!getAccessToken() || (tokenExpiryTime !== null && Date.now() >= tokenExpiryTime)) {
       await fetchAccessToken();
     }
     return accessToken;
@@ -36,7 +69,7 @@ async function getAccessToken() {
 
 // Function to make API requests with automatic token handling
 async function apiFetch(url: string, options: { _retry?: boolean, method?: 'GET'  } = {}) {
-    const token = await getAccessToken();
+    const token = await refreshAccessToken();
   
     const response = await fetch(url, {
       ...options,
