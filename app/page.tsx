@@ -1,12 +1,12 @@
 import ProductListing from "@/components/product-listing";
-import getProducts from "@/services/api/apiGetProducts";
+import getProducts from "@/services/api/apiGetProductsServer";
 
 export default async function Home() {
-  const products = await getProducts();
+  const data = await getProducts();
 
   return (
     <>
-      <ProductListing productsResponse={products} />
+      <ProductListing accessToken={data.token} productsResponse={data.response} />
     </>
   );
 }

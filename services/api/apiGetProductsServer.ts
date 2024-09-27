@@ -1,4 +1,4 @@
-import apiFetch from "@/services/api/apiFetch";
+import apiFetch from "@/services/api/apiFetchServer";
 
 export interface ApiResponse<Entity> {
     totalItems: number;
@@ -17,9 +17,13 @@ export interface Product {
     category: string;
 }
 
-async function getProducts(): Promise<ApiResponse<Product>> {
-    const response = await apiFetch(`${process.env.API_URL}products`)
-    return response.json()
+async function getProducts(): Promise<{ token: string, response: ApiResponse<Product> }> {
+    const result = await apiFetch(`${process.env.API_URL}products`)
+
+    return {
+        token: result.token as string,
+        response: await result.response.json()
+    }
 }
 
 export default getProducts;

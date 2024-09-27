@@ -3,35 +3,19 @@ let accessToken: string | null = null;
 let tokenExpiryTime: number | null = null; // Store the expiry time
 
 const setAccessToken = (token: string) => {
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem('accessToken', token);
-  } else {
     accessToken = token;
-  }
 }
 
 const setTokenExpiryTime = (expiryTime: number) => {
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem('tokenExpirityTime', expiryTime.toString());
-  } else {
     tokenExpiryTime = expiryTime;
-  }
 }
 
 const getAccessToken = (): string | null => {
-  if (typeof window !== 'undefined') {
-    return window.localStorage.getItem('accessToken');
-  } else {
     return accessToken;
-  }
 }
 
 const getTokenExpiryTime = (): number | null => {
-  if (typeof window !== 'undefined') {
-    return Number(window.localStorage.getItem('tokenExpirityTime'));
-  } else {
     return tokenExpiryTime;
-  }
 }
 
 // Function to fetch a new access token
@@ -85,7 +69,10 @@ async function apiFetch(url: string, options: { _retry?: boolean, method?: 'GET'
       return apiFetch(url, options); // Retry the request with the new token
     }
   
-    return response;
+    return {
+      token,
+      response
+    }
   }
   
   export default apiFetch;
