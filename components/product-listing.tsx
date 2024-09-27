@@ -14,15 +14,15 @@ interface Product {
 }
 
 interface ProductListingProps {
-  view: 'list' | 'card'
   searchQuery?: string
 }
 
-export default function ProductListingComponent({ view }: ProductListingProps) {
+export default function ProductListingComponent({ }: ProductListingProps) {
   const [products, setProducts] = useState<Product[]>([])
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [ref, inView] = useInView()
+  const [ view, setView ] = useState('card')
 
   const fetchProducts = async () => {
     if (loading) return
@@ -49,6 +49,14 @@ export default function ProductListingComponent({ view }: ProductListingProps) {
 
   return (
     <div>
+      <div className="mb-4 flex justify-end">
+          <button
+            onClick={() => setView(view === 'list' ? 'card' : 'list')}
+            className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+          >
+            {view === 'list' ? 'Card View' : 'List View'}
+          </button>
+      </div>
       <div className={view === 'list' ? 'space-y-4' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'}>
         {products.map((product) =>
           view === 'list' ? (
