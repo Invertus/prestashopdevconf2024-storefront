@@ -15,7 +15,7 @@ export default function ProductCardComponent({ product }: ProductCardProps) {
       <CardContent className="p-4 flex-grow">
         <div className="aspect-square relative mb-4">
           <Image
-            src=""
+            src={product.images?.[0]?.imageUrl}
             alt={product.name}
             layout="fill"
             objectFit="cover"

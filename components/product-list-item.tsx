@@ -13,7 +13,7 @@ export default function ProductListItemComponent({ product }: ProductListItemPro
     <div className="flex items-center space-x-4 p-4 bg-background rounded-lg shadow">
       <div className="flex-shrink-0 w-24 h-24 relative">
         <Image
-          src={""}
+          src={product.images?.[0]?.imageUrl}
           alt={product.name}
           layout="fill"
           objectFit="cover"

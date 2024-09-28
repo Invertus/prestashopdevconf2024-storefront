@@ -1,3 +1,5 @@
+import { ResponseMany } from '@/models/apiResponse';
+import { Product } from '@/models/product';
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -8,6 +10,23 @@ export async function GET(request: Request) {
     }
   })
 
-  const data = await response.json()
-  return NextResponse.json(data)
+  const data: ResponseMany<Product> = await response.json()
+
+  const productImages = await Promise
+      .all(data.items.map(({ productId }) => fetch(`${process.env.API_URL}product/${productId}/images`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(res => res.json()).then(images => ({ productId, images }))
+))
+
+  const indexedImages = productImages.reduce((acc, { productId, images }) => {
+    acc[productId] = images;
+    return acc;
+  }, {});
+
+  return NextResponse.json({
+    ...data,
+    items: data.items.map(product => ({ ...product, images: indexedImages[product.productId] || [] }))
+  })
 }
