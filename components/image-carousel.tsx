@@ -9,9 +9,10 @@ interface ImageCarouselProps {
   images: string[]
   alt: string
   className?: string
+  size?: 'small' | 'large'
 }
 
-export default function ImageCarousel({ images, alt, className = '' }: ImageCarouselProps) {
+export default function ImageCarousel({ images, alt, size = 'large', className = '' }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const goToPrevious = () => {
@@ -40,20 +41,20 @@ export default function ImageCarousel({ images, alt, className = '' }: ImageCaro
           <Button
             variant="outline"
             size="icon"
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-background/80"
+            className={`absolute ${size === 'small' ? 'left-1' : 'left-2'} top-1/2 transform -translate-y-1/2 bg-background/80 ${size === 'small' ? 'h-6 w-6' : ''}`}
             onClick={goToPrevious}
             aria-label="Previous image"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className={`h-4 w-4 ${size === 'small' ? 'h-3 w-3' : ''}`} />
           </Button>
           <Button
             variant="outline"
             size="icon"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-background/80"
+            className={`absolute ${size === 'small' ? 'right-1' : 'right-2'} top-1/2 transform -translate-y-1/2 bg-background/80 ${size === 'small' ? 'h-6 w-6' : ''}`}
             onClick={goToNext}
             aria-label="Next image"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className={`h-4 w-4 ${size === 'small' ? 'h-3 w-3' : ''}`} />
           </Button>
           <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
             {images.map((_, index) => (

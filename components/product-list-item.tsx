@@ -16,6 +16,7 @@ export default function ProductListItemComponent({ product }: ProductListItemPro
               images={product.images.length > 0 ? product.images.map(({ imageUrl }) => formatImage(imageUrl, 'home_default')) : ['/placeholder.svg']}
               alt={product.name || 'Product image'}
               className="w-full h-full"
+              size="small"
         />
       </div>
       <div className="flex-grow">
