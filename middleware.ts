@@ -6,10 +6,8 @@ export async function middleware(req: NextRequest) {
   const requestHeaders = new Headers(req.headers)
 
   if (token) {
-    console.info('Cookie hit!!')
     requestHeaders.set('x-access-token', token.value);
   } else {
-    console.info('CookieA NOT HIT :((')
     const accessTokenResponse = await fetch(`${process.env.API_URL}access_token`, {
       method: 'POST',
       headers: {

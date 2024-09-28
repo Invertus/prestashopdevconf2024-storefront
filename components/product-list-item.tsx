@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Product } from '@/services/api/apiGetProductsServer'
+import { Product } from '@/models/product';
 
 interface ProductListItemProps {
   product: Product;

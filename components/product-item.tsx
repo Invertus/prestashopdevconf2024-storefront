@@ -2,7 +2,7 @@
 
 import ProductCard from "@/components/product-card";
 import ProductListItem from "@/components/product-list-item";
-import { Product } from "@/services/api/apiGetProductsServer";
+import { Product } from "@/models/product";
 
 interface ProductItemProps {
     view: 'list' | 'card';

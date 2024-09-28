@@ -1,14 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { ApiResponse, Product } from '@/services/api/apiGetProductsServer'
 import ProductItem from '@/components/product-item'
+import { ResponseMany } from '@/models/apiResponse';
+import { Product } from '@/models/product';
 interface ProductListingProps {
-  productsResponse: ApiResponse<Product>;
+  data: ResponseMany<Product>;
 }
 
 
-export default function ProductListingComponent({ productsResponse: { items }  }: ProductListingProps) {
+export default function ProductListingComponent({ data: { items }  }: ProductListingProps) {
   const [ view, setView ] = useState<'card'| 'list'>('card')
 
   return (
