@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
  * @param type
  * @returns
  */
-export function formatImage(url: string, type: 'medium_default' | 'home_default') {
+export function formatImage(url: string, type: 'medium_default' | 'home_default' | 'large_default') {
   const urlParts = url.split('/');
   const fileName = urlParts.pop();
 
