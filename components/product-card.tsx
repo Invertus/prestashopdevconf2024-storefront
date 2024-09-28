@@ -24,6 +24,9 @@ export default function ProductCardComponent({ product }: ProductCardProps) {
         <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
         <p className="font-bold text-xl">${Number(product.price).toFixed(2)}</p>
       </CardContent>
+      <CardFooter className="p-4">
+        <Button className="w-full">Add to Cart</Button>
+      </CardFooter>
     </Card>
   )
 }

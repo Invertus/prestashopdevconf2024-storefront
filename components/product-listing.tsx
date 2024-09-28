@@ -4,9 +4,11 @@ import { useState } from 'react'
 import ProductItem from '@/components/product-item'
 import { ResponseMany } from '@/models/apiResponse';
 import { Product } from '@/models/product';
+
 interface ProductListingProps {
   data: ResponseMany<Product>;
 }
+
 
 export default function ProductListingComponent({ data: { items  }  }: ProductListingProps) {
   const [ view, setView ] = useState<'card'| 'list'>('card')
