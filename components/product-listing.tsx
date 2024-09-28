@@ -8,8 +8,7 @@ interface ProductListingProps {
   data: ResponseMany<Product>;
 }
 
-
-export default function ProductListingComponent({ data: { items }  }: ProductListingProps) {
+export default function ProductListingComponent({ data: { items  }  }: ProductListingProps) {
   const [ view, setView ] = useState<'card'| 'list'>('card')
 
   return (
