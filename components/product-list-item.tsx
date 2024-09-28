@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Product } from '@/models/product';
 import ImageCarousel from '@/components/image-carousel';

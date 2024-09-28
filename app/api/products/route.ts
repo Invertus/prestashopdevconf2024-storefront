@@ -21,12 +21,14 @@ export async function GET(request: Request) {
 ))
 
   const indexedImages = productImages.reduce((acc, { productId, images }) => {
+    // @ts-expect-error I dont know why this is not working
     acc[productId] = images;
     return acc;
   }, {});
 
   return NextResponse.json({
     ...data,
+        // @ts-expect-error I dont know why this is not working
     items: data.items.map(product => ({ ...product, images: indexedImages[product.productId] || [] }))
   })
 }

@@ -13,7 +13,7 @@ export default function ProductPage({ data }: { data: Product }) {
   const incrementQuantity = () => setQuantity(prev => prev + 1)
   const decrementQuantity = () => setQuantity(prev => Math.max(1, prev - 1))
 
-  const getName = (name: any) => {
+  const getName = (name: unknown) => {
     if (typeof name === 'object' && name !== null) {
       return Object.values(name)[0]
     }
