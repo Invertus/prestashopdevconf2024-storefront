@@ -42,7 +42,11 @@ export default function ImageCarousel({ images, alt, size = 'large', className =
             variant="outline"
             size="icon"
             className={`absolute ${size === 'small' ? 'left-1' : 'left-2'} top-1/2 transform -translate-y-1/2 bg-background/80 ${size === 'small' ? 'h-6 w-6' : ''}`}
-            onClick={goToPrevious}
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              goToPrevious()
+            }}
             aria-label="Previous image"
           >
             <ChevronLeft className={`h-4 w-4 ${size === 'small' ? 'h-3 w-3' : ''}`} />
@@ -50,8 +54,12 @@ export default function ImageCarousel({ images, alt, size = 'large', className =
           <Button
             variant="outline"
             size="icon"
-            className={`absolute ${size === 'small' ? 'right-1' : 'right-2'} top-1/2 transform -translate-y-1/2 bg-background/80 ${size === 'small' ? 'h-6 w-6' : ''}`}
-            onClick={goToNext}
+            className={`absolute z-10 ${size === 'small' ? 'right-1' : 'right-2'} top-1/2 transform -translate-y-1/2 bg-background/80 ${size === 'small' ? 'h-6 w-6' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              goToNext()
+            }}
             aria-label="Next image"
           >
             <ChevronRight className={`h-4 w-4 ${size === 'small' ? 'h-3 w-3' : ''}`} />

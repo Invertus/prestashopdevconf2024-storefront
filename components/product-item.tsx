@@ -1,5 +1,3 @@
-'use client'
-
 import ProductCard from "@/components/product-card";
 import ProductListItem from "@/components/product-list-item";
 import { Product } from "@/models/product";

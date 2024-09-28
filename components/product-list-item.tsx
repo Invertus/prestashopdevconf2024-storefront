@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Product } from '@/models/product';
 import ImageCarousel from '@/components/image-carousel';
 import { formatImage } from '@/lib/utils';
+import Link from 'next/link';
 
 interface ProductListItemProps {
   product: Product;
@@ -12,7 +13,7 @@ interface ProductListItemProps {
 
 export default function ProductListItemComponent({ product }: ProductListItemProps) {
   return (
-    <div className="flex items-center space-x-4 p-4 bg-background rounded-lg shadow">
+    <Link href={`/${product.productId}`} className="flex items-center space-x-4 p-4 bg-background rounded-lg shadow">
       <div className="flex-shrink-0 w-24 h-24 relative">
         <ImageCarousel
               images={product.images.length > 0 ? product.images.map(({ imageUrl }) => formatImage(imageUrl, 'home_default')) : ['/placeholder.svg']}
@@ -26,6 +27,6 @@ export default function ProductListItemComponent({ product }: ProductListItemPro
         <p className="font-bold text-xl">${Number(product.price).toFixed(2)}</p>
       </div>
       <Button>Add to Cart</Button>
-    </div>
+    </Link>
   )
 }
