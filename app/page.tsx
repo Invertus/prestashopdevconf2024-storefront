@@ -1,9 +1,18 @@
 import ProductListing from "@/components/product-listing";
+import { cookies } from 'next/headers';
+
+const getCookie = async (name: string) => {
+    return cookies().get(name)?.value;
+}
 
 export default async function Home() {
-  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products`).then((res) => res.json());
+  const accessToken = await getCookie('access_token');
+  const headers = accessToken ? { Cookie: `access_token=${accessToken};` } : undefined;
 
-  console.info(data)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products`, {
+    headers
+  });
+  const data = await response.json();
 
   return (
     <>
