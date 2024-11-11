@@ -1,65 +1,31 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useInView } from 'react-intersection-observer'
-import ProductCard from './product-card'
-import ProductListItem from './product-list-item'
-
-interface Product {
-  id: number
-  title: string
-  price: number
-  description: string
-  image: string
-}
+import { useState } from 'react'
+import ProductItem from '@/components/product-item'
+import { ResponseMany } from '@/models/apiResponse';
+import { Product } from '@/models/product';
 
 interface ProductListingProps {
-  view: 'list' | 'card'
-  searchQuery?: string
+  data: ResponseMany<Product>;
 }
 
-export default function ProductListingComponent({ view }: ProductListingProps) {
-  const [products, setProducts] = useState<Product[]>([])
-  const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(false)
-  const [ref, inView] = useInView()
 
-  const fetchProducts = async () => {
-    if (loading) return
-    setLoading(true)
-    try {
-      // In a real application, you would fetch from your API here
-      // This is a mock API call
-      const response = await fetch(`https://fakestoreapi.com/products?limit=10&page=${page}`)
-      const newProducts = await response.json()
-      setProducts((prevProducts) => [...prevProducts, ...newProducts])
-      setPage((prevPage) => prevPage + 1)
-    } catch (error) {
-      console.error('Error fetching products:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    if (inView) {
-      fetchProducts()
-    }
-  }, [inView])
+export default function ProductListingComponent({ data: { items  }  }: ProductListingProps) {
+  const [ view, setView ] = useState<'card'| 'list'>('card')
 
   return (
     <div>
-      <div className={view === 'list' ? 'space-y-4' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'}>
-        {products.map((product) =>
-          view === 'list' ? (
-            <ProductListItem key={product.id} product={product} />
-          ) : (
-            <ProductCard key={product.id} product={product} />
-          )
-        )}
+      <div className="mb-4 flex justify-end">
+          <button
+            onClick={() => setView(view === 'list' ? 'card' : 'list')}
+            className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+          >
+            {view === 'list' ? 'Card View' : 'List View'}
+          </button>
       </div>
-      {loading && <p className="text-center mt-4">Loading more products...</p>}
-      <div ref={ref} className="h-10" />
+      <div className={view === 'list' ? 'space-y-4' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'}>
+        {items.map((product) => <ProductItem key={product.productId} product={product} view={view}/>)}
+      </div>
     </div>
   )
 }
